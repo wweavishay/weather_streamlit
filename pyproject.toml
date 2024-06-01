@@ -6,7 +6,7 @@ authors = ["wweavishayaknin <WWEAVISHAYAKNIN@GMAIL.COM>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11.9"
 streamlit = "^1.35.0"
 pandas = "^2.2.2"
 matplotlib = "^3.9.0"
