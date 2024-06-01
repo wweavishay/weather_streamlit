@@ -7,6 +7,9 @@ attrs==23.2.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0
 blinker==1.8.2 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:1779309f71bf239144b9399d06ae925637cf6634cf6bd131104184531bf67c01 \
     --hash=sha256:8f77b09d3bf7c795e969e9486f39c2c5e9c39d4ee07424be2bc594ece9642d83
+branca==0.7.2 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:853a359c34d08fd06498be762d8be9932750db4049cac11e25dd6f23562e25c2 \
+    --hash=sha256:ca4c94643ef31b819987ca5bd19c6009ea17b440baa3aac04628545f7a4da023
 cachetools==5.3.3 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:0abad1021d3f8325b2fc1d2e9c8b9c9d57b04c3932657a72465447332c24d945 \
     --hash=sha256:ba29e2dfa0b8b556606f097407ed1aa62080ee108ab0dc5ec9d6a723a007d105
@@ -213,6 +216,9 @@ cycler==0.12.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0.
     --hash=sha256:88bb128f02ba341da8ef447245a9e138fae777f6a23943da4540077d3601eb1c
 django-os-geocoder==0.1.6 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:a6b3ec67e2ff8f034bd1f015eb7c8b4795b9f024db8a614f0e10729d7c645779
+folium==0.16.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:2585ee9253dc758d3a365534caa6fb5fa0c244646db4dc5819afc67bbd4daabb \
+    --hash=sha256:ba72505db18bef995c880da19457d2b10c931db8059af5f6ccec9310d262b584
 fonttools==4.53.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:099634631b9dd271d4a835d2b2a9e042ccc94ecdf7e2dd9f7f34f7daf333358d \
     --hash=sha256:0c555e039d268445172b909b1b6bdcba42ada1cf4a60e367d68702e3f87e5f64 \
@@ -259,6 +265,9 @@ fonttools==4.53.0 ; python_full_version >= "3.11.9" and python_full_version < "4
 geographiclib==2.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:6b7225248e45ff7edcee32becc4e0a1504c606ac5ee163a5656d482e0cd38734 \
     --hash=sha256:f7f41c85dc3e1c2d3d935ec86660dc3b2c848c83e17f9a9e51ba9d5146a15859
+geojson==2.5.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:6e4bb7ace4226a45d9c8c8b1348b3fc43540658359f93c3f7e03efa9f15f658a \
+    --hash=sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba
 geopy==2.4.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:50283d8e7ad07d89be5cb027338c6365a32044df3ae2556ad3f52f4840b3d0d1 \
     --hash=sha256:ae8b4bc5c1131820f4d75fce9d4aaaca0c85189b3aa5d64c3dcaf5e3b7b882a7
@@ -729,9 +738,16 @@ pydeck==0.9.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0
 pygments==2.18.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199 \
     --hash=sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a
+pyowm==3.3.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:8196f77c91eac680676ed5ee484aae8a165408055e3e2b28025cbf60b8681e03 \
+    --hash=sha256:86463108e7613171531ba306040b43c972b3fc0b0acf73b12c50910cdd2107ab
 pyparsing==3.1.2 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:a1bac0ce561155ecc3ed78ca94d3c9378656ad4c94c1270de543f621420f94ad \
     --hash=sha256:f9db75911801ed778fe61bb643079ff86601aca99fcae6345aa67292038fb742
+pysocks==1.7.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:08e69f092cc6dbe92a0fdd16eeb9b9ffbc13cadfe5ca4c7bd92ffb078b293299 \
+    --hash=sha256:2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5 \
+    --hash=sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0
 python-dateutil==2.9.0.post0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
     --hash=sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427
@@ -822,6 +838,9 @@ regex==2024.5.15 ; python_full_version >= "3.11.9" and python_full_version < "4.
     --hash=sha256:f8ec0c2fea1e886a19c3bee0cd19d862b3aa75dcdfb42ebe8ed30708df64687a \
     --hash=sha256:f9ebd0a36102fcad2f03696e8af4ae682793a5d30b46c647eaf280d6cfb32796
 requests==2.32.3 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760 \
+    --hash=sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6
+requests[socks]==2.32.3 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760 \
     --hash=sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6
 rich==13.7.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
@@ -938,6 +957,9 @@ smmap==5.0.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0"
     --hash=sha256:e6d8668fa5f93e706934a62d7b4db19c8d9eb8cf2adbb75ef1b675aa332b69da
 south==1.0.2 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:d360bd31898f9df59f6faa786551065bba45b35e7ee3c39b381b4fbfef7392f4
+streamlit-folium==0.20.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:8b28ead558228197af9c6fe7bfa588e297461b1dae0e5b3f6976d08a3541b491 \
+    --hash=sha256:f4b72488ffb1c85d972a38b6c6956364e73cac928d4be9f413b5a6bdd82047ac
 streamlit==1.35.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
     --hash=sha256:679d55bb6189743f606abf0696623df0bfd223a6d0c8d96b8d60678d4891d2d6 \
     --hash=sha256:e17d1d86830a0d7687c37faf2fe47bffa752d0c95a306e96d7749bd3faa72a5b
@@ -1010,3 +1032,6 @@ watchdog==4.0.1 ; python_full_version >= "3.11.9" and python_full_version < "4.0
     --hash=sha256:f0de0f284248ab40188f23380b03b59126d1479cd59940f2a34f8852db710625 \
     --hash=sha256:f27279d060e2ab24c0aa98363ff906d2386aa6c4dc2f1a374655d4e02a6c5e5e \
     --hash=sha256:f8affdf3c0f0466e69f5b3917cdd042f89c8c63aebdb9f7c078996f607cdb0f5
+xyzservices==2024.4.0 ; python_full_version >= "3.11.9" and python_full_version < "4.0.0" \
+    --hash=sha256:6a04f11487a6fb77d92a98984cd107fbd9157fd5e65f929add9c3d6e604ee88c \
+    --hash=sha256:b83e48c5b776c9969fffcfff57b03d02b1b1cd6607a9d9c4e7f568b01ef47f4c
