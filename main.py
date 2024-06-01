@@ -16,6 +16,10 @@ menu_choice = st.sidebar.radio("", ["Set Default Location", "Set Temperature Uni
 
 if menu_choice == "Set Default Location":
     st.subheader("Set Default Location")
+    # Instructions for new users
+    st.write("Welcome! To set your default location, please provide the following information:")
+    st.write("Example city - paris , Country - France ,Timezone - Europe/London  ")
+
     city_name = st.text_input("Enter your default city name:")
     country_name = st.text_input("Enter the country (optional):")
     timezone_name = st.selectbox("Select the timezone:", ["UTC", "Europe/London", "Asia/Jerusalem", "America/New_York", "America/Los_Angeles","Asia/Tokyo", "Asia/Shanghai"])
