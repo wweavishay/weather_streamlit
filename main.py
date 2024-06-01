@@ -1,5 +1,6 @@
 import streamlit as st
 from weather import *
+from weatherchat import chatbot
 
 # Set page title and icon
 st.set_page_config(page_title="Weather Comparison App", page_icon=":partly_sunny:")
@@ -8,7 +9,10 @@ st.set_page_config(page_title="Weather Comparison App", page_icon=":partly_sunny
 st.title('Weather Comparison App')
 
 # Main menu options
-menu_choice = st.radio("Choose an option:", ["Set Default Location", "Set Temperature Unit", "Compare Weather and Time"])
+st.sidebar.markdown("<h1 style='color: orange;'>Choose an option:</h1>", unsafe_allow_html=True)
+menu_choice = st.sidebar.radio("", ["Set Default Location", "Set Temperature Unit", "Compare Weather and Time", "Talk to Chatbot"])
+
+
 
 if menu_choice == "Set Default Location":
     st.subheader("Set Default Location")
@@ -39,6 +43,7 @@ elif menu_choice == "Compare Weather and Time":
         default_city, default_country, default_timezone = get_default_location()
         comparison_data = compare_weather_and_time(default_city, default_country, default_timezone, user_city,
                                                    user_country, user_timezone)
+        comparison_data['user_timezone'] = user_timezone
         if comparison_data:
             # Display json location data
             st.write("JSON Location:")
@@ -63,8 +68,32 @@ elif menu_choice == "Compare Weather and Time":
                 st.write(f"Temperature: {comparison_data['user_location']['temperature']} °{get_temperature_unit()[0]}")
                 st.write(f"Weather Conditions: {comparison_data['user_location']['weather_conditions']}")
                 st.write(f"Humidity: {comparison_data['user_location']['humidity']}")
-                st.write(f"Time: {comparison_data['default_location']['time']} {comparison_data['default_location']['timezone']}")
+                st.write(f"Time: {comparison_data['user_location']['time']} {comparison_data['user_location']['timezone']}")
             with col2:
                 st.image(display_weather_image(comparison_data['user_location']['temperature']), caption='Weather Icon')
         else:
             st.error("Failed to retrieve comparison data.")
+
+elif menu_choice == "Talk to Chatbot":
+    st.subheader("Talk to Chatbot")
+
+    # Example questions the chatbot can answer
+    st.write("Example questions the chatbot can answer:")
+    st.markdown("- *What's the weather like in Paris?*")
+    st.markdown("- *Is it sunny in London?*")
+    st.markdown("- *How is the humidity in Tokyo?*")
+    st.markdown("- *Is it cloudy in New York?*")
+    st.markdown("- *Show all details for Berlin?*")
+    st.markdown(" ######  Enter a city if the bot didn't know to answer ")
+    st.markdown("  ")
+    st.markdown("  ")
+    user_input = st.text_input("You:")
+    if st.button("Send"):
+        responses = chatbot(user_input)
+        if responses:
+            st.markdown(f"<p style='color: yellow; font-size: 22px;'>Your question: {user_input}</p>", unsafe_allow_html=True)
+            for response in responses:
+                st.write("Bot:", response)  # Display chatbot's response
+        else:
+            st.write("Bot:", "Sorry, I didn't understand that.")
+

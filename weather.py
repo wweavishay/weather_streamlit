@@ -2,6 +2,8 @@ import requests
 import json
 from datetime import datetime, timedelta, timezone
 import pytz
+import pandas as pd
+
 
 API_KEY = "cc684ce23b3296f9598c4187825107eb"
 
@@ -105,24 +107,8 @@ def get_weather(city_name, country_name=None):
 
     return weather_info
 
-def get_current_time(city_name):
-    try:
-        url = f"http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}"
-        response = requests.get(url)
-        data = response.json()
 
-        if response.status_code != 200:
-            return "Error: Failed to retrieve weather data."
 
-        if "timezone" in data:
-            timezone_offset = data["timezone"]  # Timezone offset in seconds
-            utc_time = datetime.utcnow()  # Current UTC time
-            city_time = utc_time + timedelta(seconds=timezone_offset)  # Convert UTC time to city's local time
-            return city_time.strftime("%Y-%m-%d %H:%M:%S")
-        else:
-            return "Error: Timezone information not available for the city."
-    except Exception as e:
-        return f"Error: {str(e)}"
 def compare_weather_and_time(default_city, default_country, default_timezone, user_city, user_country, user_timezone):
     default_timezone = pytz.timezone(default_timezone)
     user_timezone = pytz.timezone(user_timezone)
@@ -134,11 +120,11 @@ def compare_weather_and_time(default_city, default_country, default_timezone, us
         default_temperature = float(default_data['temperature'])
         user_temperature = float(user_data['temperature'])
 
-        # Get current time for default location from OpenWeatherMap API
-        default_time = get_current_time(default_city)
+        # Get current time for default location
+        default_time = datetime.now(default_timezone)
 
-        # Get current time for user location from OpenWeatherMap API
-        user_time = get_current_time(user_city)
+        # Get current time for user location
+        user_time = datetime.now(user_timezone)
 
         # Create response data
         comparison_data = {
@@ -148,7 +134,7 @@ def compare_weather_and_time(default_city, default_country, default_timezone, us
                 'temperature': default_temperature,
                 'weather_conditions': default_data['weather_conditions'],
                 'humidity': default_data['humidity'],
-                'time': default_time,
+                'time': default_time.strftime("%Y-%m-%d %H:%M:%S"),
                 'timezone': default_timezone.zone
             },
             'user_location': {
@@ -157,14 +143,12 @@ def compare_weather_and_time(default_city, default_country, default_timezone, us
                 'temperature': user_temperature,
                 'weather_conditions': user_data['weather_conditions'],
                 'humidity': user_data['humidity'],
-                'time': user_time,
+                'time': user_time.strftime("%Y-%m-%d %H:%M:%S"),
                 'timezone': user_timezone.zone
             }
         }
 
         # Calculate time difference
-        default_time = datetime.strptime(default_time, "%Y-%m-%d %H:%M:%S")
-        user_time = datetime.strptime(user_time, "%Y-%m-%d %H:%M:%S")
         time_difference = user_time - default_time
         hours, remainder = divmod(time_difference.seconds, 3600)
         minutes, _ = divmod(remainder, 60)
