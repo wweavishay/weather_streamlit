@@ -1,7 +1,10 @@
 import streamlit as st
 from weather import *
 from weatherchat import chatbot
+from historydata import *
+from streamlit_folium import folium_static
 
+comparison_data={}
 # Set page title and icon
 st.set_page_config(page_title="Weather Comparison App", page_icon=":partly_sunny:")
 
@@ -10,7 +13,7 @@ st.title('Weather Comparison App')
 
 # Main menu options
 st.sidebar.markdown("<h1 style='color: orange;'>Choose an option:</h1>", unsafe_allow_html=True)
-menu_choice = st.sidebar.radio("", ["Set Default Location", "Set Temperature Unit", "Compare Weather and Time", "Talk to Chatbot"])
+menu_choice = st.sidebar.radio("", ["Set Default Location", "Set Temperature Unit", "Compare Weather and Time", "Talk to Chatbot", "show map"])
 
 
 
@@ -19,6 +22,7 @@ if menu_choice == "Set Default Location":
     # Instructions for new users
     st.write("Welcome! To set your default location, please provide the following information:")
     st.write("Example city - paris , Country - France ,Timezone - Europe/London  ")
+    st.write("Example city - tokyo , Country - japan ,Timezone - Asia/Tokyo ")
 
     city_name = st.text_input("Enter your default city name:")
     country_name = st.text_input("Enter the country (optional):")
@@ -27,6 +31,9 @@ if menu_choice == "Set Default Location":
     if st.button("Set Default Location"):
         result = set_default_location(city_name, country_name, timezone_name)
         st.success(result)
+
+
+
 
 elif menu_choice == "Set Temperature Unit":
     st.subheader("Set Temperature Unit")
@@ -101,3 +108,25 @@ elif menu_choice == "Talk to Chatbot":
         else:
             st.write("Bot:", "Sorry, I didn't understand that.")
 
+
+else:
+    st.subheader("Show Map")
+
+    # Define default city and country
+    default_city, default_country, _ = get_default_location()
+
+    # Create a button for showing the map
+    if st.button("Show City Location Map"):
+        # Generate the map
+        m = city_location_map(default_city.capitalize(), default_country.capitalize())
+
+        # Check if the map was successfully generated
+        if m:
+            # Display map
+            st.write("City Location Map:")
+            st.write(f"City: {default_city}")
+            st.write(f"Country: {default_country}")
+            st_data = folium_static(m, height=370)
+
+        else:
+            st.error(f"Failed to generate map for the selected  -{default_city} - {default_country} .")

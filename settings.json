@@ -1,1 +1,1 @@
-{"timezone": "UTC", "default_location": {"city": "TEL AVIV", "timezone": "UTC"}, "temperature_unit": "fahrenheit"}
+{"timezone": "UTC", "default_location": {"city": "tokyo", "country": "japan", "timezone": "UTC"}, "temperature_unit": "fahrenheit"}
