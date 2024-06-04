@@ -68,9 +68,7 @@ def read_excel_file():
     except Exception as e:
         return f"An error occurred yeshuvim.xlsx: {e}"
 
-def clean_text(text):
-    """Clean the text by converting to uppercase and removing leading/trailing whitespace."""
-    return text.strip().upper()
+
 
 def fetch_dataframes():
     df_alertoref = make_alert_df()
@@ -79,7 +77,7 @@ def fetch_dataframes():
 
 def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
-        mapping_df['hebrewcity'] = mapping_df['hebrewcity'].apply(clean_text)
+
         result_df = pd.merge(df_alertoref, mapping_df, how='left', left_on='data', right_on='hebrewcity')
 
         if isinstance(df_weather, pd.DataFrame):
@@ -92,9 +90,6 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
 
 def mainpikudorefalerts():
     df_alertoref, df_weather = fetch_dataframes()
-
-    if df_alertoref is None or df_weather is None:
-        return None, "Error fetching dataframes."
 
     mapping_df = read_excel_file()
 
