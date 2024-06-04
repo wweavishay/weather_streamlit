@@ -7,7 +7,7 @@ from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 
 # Download NLTK data if not already downloaded
-nltk.download("punkt")
+nltk.data.path.append("/path/to/nltk_data")
 
 # Initialize NLTK stemmer and lemmatizer
 stemmer = PorterStemmer()
