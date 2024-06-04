@@ -112,31 +112,34 @@ elif menu_choice == "Pikud Haoref Alerts":
     alert_preview, merged_df_message = mainpikudorefalerts()
     st.markdown(" ")
 
-    # Display rows of specific columns in a loop
-    columns_to_display = ['alertDate', 'data', 'Temperature', 'Wind_Speed', 'Station_Name']
-    for index, row in merged_df_message.iterrows():
-        # Extract values from the row
-        alert_date = row['alertDate']
-        temperature = row['Temperature']
-        wind_speed = row['Wind_Speed']
-        station_name = row['hebrewcity']
-        typecat = row['title']  # טילים או כלי טייס עוין
-        # Construct the text
-        text = f" <div style='text-align: right;'>    אזור: {station_name}   | טמפרטורה:  {temperature}   | מהירות רוח: {wind_speed}  </div>"
-        title = f"<div style='text-align: right;color: blue;'>  {typecat}  - {alert_date} </div> "
-        image = ""
-        if typecat == "חדירת כלי טיס עוין":
-            image += f" <img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"
-        else:
-            image += f" <img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
+    # Check if merged_df_message is a DataFrame
+    if isinstance(merged_df_message, pd.DataFrame):
+        # Display rows of specific columns in a loop
+        columns_to_display = ['alertDate', 'data', 'Temperature', 'Wind_Speed', 'Station_Name']
+        for index, row in merged_df_message.iterrows():
+            # Extract values from the row
+            alert_date = row['alertDate']
+            temperature = row['Temperature']
+            wind_speed = row['Wind_Speed']
+            station_name = row['hebrewcity']
+            typecat = row['title'] # טילים או כלי טייס עוין
+            # Construct the text
+            text = f" <div style='text-align: right;'>    אזור: {station_name}   | טמפרטורה:  {temperature}   | מהירות רוח: {wind_speed}  </div>"
+            title = f"<div style='text-align: right;color: blue;'>  {typecat}  - {alert_date} </div> "
+            image=""
+            if typecat == "חדירת כלי טיס עוין":
+                 image += f" <img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"
+            else:
+                image += f" <img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
 
-        if float(temperature) > 30 or float(wind_speed) > 3:
-            image += f"  <div style='text-align:right'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
+            if float(temperature) > 30 or float(wind_speed ) > 3 :
+                image += f"  <div style='text-align:right'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
 
-        st.markdown(f" #### {title} {image}", unsafe_allow_html=True)
-        st.markdown(f" ##### {text}", unsafe_allow_html=True)
-        st.markdown(" ")
-
+            st.markdown(f" #### {title} {image}",unsafe_allow_html=True)
+            st.markdown(f" ##### {text}" ,unsafe_allow_html=True)
+            st.markdown(" ")
+    else:
+        st.write("Error occurred. Please check data fetching and merging.")
 
 
 else:
