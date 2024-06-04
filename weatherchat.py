@@ -1,3 +1,4 @@
+import streamlit as st
 import re
 import requests
 import nltk
@@ -5,17 +6,12 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 
+# Download NLTK data if not already downloaded
 nltk.download("punkt")
 
-# Specify NLTK data directory
-nltk.data.path.append("/path/to/nltk_data")
-
-# Ensure NLTK data is available
-try:
-    nltk.data.find("tokenizers/punkt")
-except LookupError:
-    nltk.download("punkt", download_dir="/path/to/nltk_data")
-
+# Initialize NLTK stemmer and lemmatizer
+stemmer = PorterStemmer()
+lemmatizer = WordNetLemmatizer()
 
 # Initialize stemmer and lemmatizer
 stemmer = PorterStemmer()
