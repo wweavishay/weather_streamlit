@@ -82,6 +82,8 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
 
         if isinstance(df_weather, pd.DataFrame):
             merged_df = pd.merge(result_df, df_weather, how='left', left_on='englishcity', right_on='Station_Name')
+            merged_df = merged_df.dropna(subset=['Station_Name'])
+
             return merged_df
         else:
             return None
