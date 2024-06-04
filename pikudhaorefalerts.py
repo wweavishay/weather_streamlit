@@ -41,7 +41,7 @@ def xml_to_dataframe():
 
 def read_excel_file():
     try:
-        return pd.read_excel("yeshuvim.xlsx")
+        return pd.read_excel("data/yeshuvim.xlsx")
     except Exception as e:
         return f"An error occurred yeshuvim.xlsx: {e}"
 
