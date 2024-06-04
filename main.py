@@ -3,7 +3,7 @@ from weather import *
 from weatherchat import chatbot
 from historydata import *
 from streamlit_folium import folium_static
-
+from pikudhaorefalerts import *
 comparison_data={}
 # Set page title and icon
 st.set_page_config(page_title="Weather Comparison App", page_icon=":partly_sunny:")
@@ -13,7 +13,7 @@ st.title('Weather Comparison App')
 
 # Main menu options
 st.sidebar.markdown("<h1 style='color: orange;'>Choose an option:</h1>", unsafe_allow_html=True)
-menu_choice = st.sidebar.radio("", ["Set Default Location", "Set Temperature Unit", "Compare Weather and Time", "Talk to Chatbot", "show map"])
+menu_choice = st.sidebar.radio("", ["Set Default Location", "Set Temperature Unit", "Compare Weather and Time", "Talk to Chatbot", "show map", "Pikud Haoref Alerts"])
 
 
 
@@ -107,6 +107,39 @@ elif menu_choice == "Talk to Chatbot":
                 st.write("Bot:", response)  # Display chatbot's response
         else:
             st.write("Bot:", "Sorry, I didn't understand that.")
+
+elif menu_choice == "Pikud Haoref Alerts":
+    alert_preview, merged_df_message = mainpikudorefalerts()
+    st.markdown(" ")
+
+    # Check if merged_df_message is a DataFrame
+    if isinstance(merged_df_message, pd.DataFrame):
+        # Display rows of specific columns in a loop
+        columns_to_display = ['alertDate', 'data', 'Temperature', 'Wind_Speed', 'Station_Name']
+        for index, row in merged_df_message.iterrows():
+            # Extract values from the row
+            alert_date = row['alertDate']
+            temperature = row['Temperature']
+            wind_speed = row['Wind_Speed']
+            station_name = row['hebrewcity']
+            typecat = row['title'] # טילים או כלי טייס עוין
+            # Construct the text
+            text = f" <div style='text-align: right;'>    אזור: {station_name}   | טמפרטורה:  {temperature}   | מהירות רוח: {wind_speed}  </div>"
+            title = f"<div style='text-align: right;color: blue;'>  {typecat}  - {alert_date} </div> "
+            image=""
+            if typecat == "חדירת כלי טיס עוין":
+                 image += f" <img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"
+            else:
+                image += f" <img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
+
+            if float(temperature) > 30 or float(wind_speed ) > 3 :
+                image += f"  <div style='text-align:right'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
+
+            st.markdown(f" #### {title} {image}",unsafe_allow_html=True)
+            st.markdown(f" ##### {text}" ,unsafe_allow_html=True)
+            st.markdown(" ")
+    else:
+        st.write("Error occurred. Please check data fetching and merging.")
 
 
 else:
