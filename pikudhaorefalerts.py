@@ -14,7 +14,7 @@ def make_alert_df():
     except ValueError as e:
         return f"Error creating DataFrame: {e}"
     except Exception as e:
-        return f"An unexpected error occurred: {e}"
+        return f"An unexpected error occurred pikud haored: {e}"
 
 def xml_to_dataframe():
     url = "https://ims.gov.il/sites/default/files/ims_data/xml_files/imslasthour.xml"
@@ -37,13 +37,13 @@ def xml_to_dataframe():
         else:
             return f"Error: Unable to retrieve XML data. Status code: {response.status_code}"
     except Exception as e:
-        return f"An error occurred: {e}"
+        return f"An error occurred xml : {e}"
 
 def read_excel_file():
     try:
         return pd.read_excel("yeshuvim.xlsx")
     except Exception as e:
-        return f"An error occurred: {e}"
+        return f"An error occurred yeshuvim.xlsx: {e}"
 
 def clean_text(text):
     """Clean the text by converting to uppercase and removing leading/trailing whitespace."""
