@@ -5,6 +5,8 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 
+nltk.download("punkt")
+
 # Specify NLTK data directory
 nltk.data.path.append("/path/to/nltk_data")
 
