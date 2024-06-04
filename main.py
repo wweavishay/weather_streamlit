@@ -112,8 +112,6 @@ elif menu_choice == "Pikud Haoref Alerts":
     alert_preview, merged_df_message = mainpikudorefalerts()
     st.markdown(" ")
 
-    # Check if merged_df_message is a DataFrame
-    if isinstance(merged_df_message, pd.DataFrame):
         # Display rows of specific columns in a loop
         columns_to_display = ['alertDate', 'data', 'Temperature', 'Wind_Speed', 'Station_Name']
         for index, row in merged_df_message.iterrows():
@@ -138,8 +136,7 @@ elif menu_choice == "Pikud Haoref Alerts":
             st.markdown(f" #### {title} {image}",unsafe_allow_html=True)
             st.markdown(f" ##### {text}" ,unsafe_allow_html=True)
             st.markdown(" ")
-    else:
-        st.write("Error occurred. Please check data fetching and merging.")
+    
 
 
 else:
