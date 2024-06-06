@@ -92,7 +92,7 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
         result_df = df_alertoref
 
         # Clean 'englishcity' column
-        result_df['englishcity'] = result_df['data'].apply(
+        result_df['data'] = result_df['data'].apply(
             lambda x: re.sub(r'[^a-zA-Z]', '', str(x)) if isinstance(x, str) else x)
 
         if isinstance(df_weather, pd.DataFrame):
