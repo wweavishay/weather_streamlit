@@ -77,45 +77,40 @@ def fetch_dataframes():
     df_weather = xml_to_dataframe()
     return df_alertoref, df_weather
 
-def check_station_name(x, df_weather):
-    if isinstance(x, str):
-        for city in df_weather['Station_Name']:
-            if city in x:
-                return True
-    return False
+def contains_substring(s1, s2):
+    s1 = str(s1)
+    s2 = str(s2)
+    return s1 in s2 or s2 in s1
+
 
 def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
 
-        mapping_dict = mapping_df.set_index('englishcity')['hebrewcity'].to_dict()
+        mapping_dict = mapping_df.set_index('hebrewcity')['englishcity'].to_dict()
         df_alertoref['data'] = df_alertoref['data'].map(mapping_dict)
-        result_df = df_alertoref
+
 
         # Clean 'englishcity' column
-        result_df['data'] = result_df['data'].apply(
+        df_alertoref['data'] = df_alertoref['data'].apply(
             lambda x: re.sub(r'[^a-zA-Z]', '', str(x)) if isinstance(x, str) else x)
-
+        # print(df_alertoref)
+        # print(df_weather)
         if isinstance(df_weather, pd.DataFrame):
-            # Perform the left join based on substring matching in both directions
-            merged_df = pd.merge(result_df, df_weather, how='inner',
-                                 left_on=result_df['data'].apply(check_station_name, args=(df_weather,)),
-                                 right_on=df_weather['Station_Name'].apply(lambda x: any(
-                                     station in x if isinstance(station, str) else False for station in
-                                     result_df['data'])))
 
+            merged_df = pd.merge(df_alertoref, df_weather, how='inner',
+                                 left_on=df_alertoref['data'].apply(lambda x: x if any(
+                                     contains_substring(x, y) for y in df_weather['Station_Name']) else None),
+                                 right_on=df_weather['Station_Name'].apply(lambda x: x if any(
+                                     contains_substring(x, y) for y in df_alertoref['data']) else None))
 
-            # Drop unnecessary columns resulting from the merge
-            merged_df.drop(['key_0'], axis=1, inplace=True)
-
-            # Remove duplicate rows based on 'Station_Name' column
 
 
             # Remove rows where 'Station_Name' or 'Wind_Speed' or 'Temperature' is NaN
             merged_df.dropna(subset=['Station_Name', 'Wind_Speed', 'Temperature'], axis=0, inplace=True)
-            merged_df['Station_Name'] = merged_df['Station_Name'].map(mapping_dict)
             merged_df.drop_duplicates(subset=['Station_Name'], inplace=True)
             merged_df.dropna(subset=['Station_Name'], inplace=True)
             return merged_df
+
         else:
             return None
     else:
@@ -143,5 +138,5 @@ if __name__ == "__main__":
     alert_preview, merged_df = mainpikudorefalerts()
     #print(alert_preview)
     print("---------MERGED----------")
-    print(merged_df)
+    # print(merged_df)
 
