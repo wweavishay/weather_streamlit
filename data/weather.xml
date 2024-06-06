@@ -11083,7 +11083,7 @@
 <Ws10mm>4.7</Ws10mm>
 </Observation>
 <Observation>
-<stn_name>DAFNA</stn_name>
+<stn_name>AVSHALOM</stn_name>
 <stn_num>499</stn_num>
 <time_obs>2024-06-04T18:20:00</time_obs>
 <BP/>
@@ -11106,7 +11106,7 @@
 <Ws10mm>4.8</Ws10mm>
 </Observation>
 <Observation>
-<stn_name>DAFNA</stn_name>
+<stn_name>HOLIT</stn_name>
 <stn_num>499</stn_num>
 <time_obs>2024-06-04T18:30:00</time_obs>
 <BP/>
