@@ -111,7 +111,6 @@ elif menu_choice == "Talk to Chatbot":
 elif menu_choice == "Pikud Haoref Alerts":
     _, merged_df_message = mainpikudorefalerts()
 
-
     st.markdown(" ")
 
     # Check if merged_df_message is a DataFrame
@@ -124,25 +123,26 @@ elif menu_choice == "Pikud Haoref Alerts":
             temperature = row['Temperature']
             wind_speed = row['Wind_Speed']
             station_name = row['Station_Name']
-            typecat = row['title'] # טילים או כלי טייס עוין
+            typecat = row['title']  # טילים או כלי טייס עוין
             # Construct the text
-            text = f" <div style='text-align: right;'>    | טמפרטורה:  {temperature}   | מהירות רוח: {wind_speed}  </div>"
-            title = f"<div style='text-align: right; color: blue; font-size: 30px;'>{typecat} - {alert_date}<br><span style='color: orange;'>{station_name}</span></div>"
-            image=""
+            title = f"<div style='text-align: right; color: #1a73e8; font-size: 24px; font-weight: bold;'> {typecat} - {alert_date}</div> <span style='color: #ea4335; font-size: 34px;'>{station_name}</span>"
+            text = f"<div style='text-align: right; font-size: 20px;color: black;'> | טמפרטורה: {temperature} <span style='direction: rtl;'>&#8451;</span> | מהירות רוח: {wind_speed}</div>"
+            image = ""
             if typecat == "חדירת כלי טיס עוין":
-                 image += f" <img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"
+                image += f"<img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"
             else:
-                image += f" <img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
+                image += f"<img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
 
-            if float(temperature) > 30 or float(wind_speed ) > 3 :
-                image += f"  <div style='text-align:right'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
-
-            st.markdown(f" #### {title} {image}",unsafe_allow_html=True)
-            st.markdown(f" ##### {text}" ,unsafe_allow_html=True)
-            st.markdown(" ")
+            if float(temperature) > 30 or float(wind_speed) > 3:
+                image += f"<div style='text-align: right; font-size: 18px; color: #ea4335;'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
+            # Enclose each row within a styled <div> element with a border
+            st.markdown(f"<div style='border-radius: 10px; border: 2px solid #e0e0e0; padding: 20px; margin: 20px; background-color:#D3D3D3;'>"
+                        f"<div>{title}</div>"
+                        f"<div>{image}</div>"
+                        f"<div>{text}</div>"
+                        f"</div>", unsafe_allow_html=True)
     else:
         st.write("Error occurred. Please check data fetching and merging.")
-
 
 else:
     st.subheader("Show Map")
