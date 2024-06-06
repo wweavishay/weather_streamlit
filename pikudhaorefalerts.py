@@ -77,6 +77,13 @@ def fetch_dataframes():
     df_weather = xml_to_dataframe()
     return df_alertoref, df_weather
 
+def check_station_name(x, df_weather):
+    if isinstance(x, str):
+        for city in df_weather['Station_Name']:
+            if city in x:
+                return True
+    return False
+
 def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
 
@@ -84,13 +91,24 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
         result_df['englishcity'] = result_df['englishcity'].apply(
             lambda x: re.sub(r'[^a-zA-Z]', '', str(x)) if isinstance(x, str) else x)
 
-        print(result_df  )
+        print(result_df)
 
         if isinstance(df_weather, pd.DataFrame):
-            merged_df = pd.merge(result_df, df_weather, how='left', left_on='englishcity', right_on='Station_Name')
-            merged_df.dropna(subset=['Station_Name'], axis=0, inplace=True)
+            # Perform the left join based on substring matching in both directions
+            merged_df = pd.merge(result_df, df_weather, how='left',
+                                 left_on=result_df['englishcity'].apply(check_station_name, args=(df_weather,)),
+                                 right_on=df_weather['Station_Name'].apply(lambda x: any(
+                                     station in x if isinstance(station, str) else False for station in
+                                     result_df['englishcity'])))
 
-            merged_df_no_alertdate_unique = merged_df[~merged_df.duplicated(subset=['alertDate'])]
+            # Drop the duplicated columns resulting from the merge
+            merged_df.drop(['key_0'], axis=1, inplace=True)
+
+            # Remove duplicate rows based on all columns
+            merged_df.drop_duplicates(subset=['Station_Name'], inplace=True)
+
+            # Remove rows where 'Station_Name' or 'Wind_Speed' is NaN
+            merged_df.dropna(subset=['Station_Name', 'Wind_Speed','Temperature'], axis=0, inplace=True)
 
             return merged_df
         else:
@@ -100,9 +118,7 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
 
 def mainpikudorefalerts():
     df_alertoref, df_weather = fetch_dataframes()
-
     mapping_df = read_excel_file()
-
     if mapping_df is None:
         return None, "Error reading mapping DataFrame."
 
@@ -111,15 +127,15 @@ def mainpikudorefalerts():
     if merged_df is None:
         return None, "Error merging dataframes."
     else:
-        alert_preview = df_alertoref.head() if not df_alertoref.empty else "No data available in Alert DataFrame."
+        alert_preview = df_alertoref if not df_alertoref.empty else "No data available in Alert DataFrame."
+        print("------------")
+        print(alert_preview)
         return alert_preview, merged_df
 
 
 if __name__ == "__main__":
     alert_preview, merged_df = mainpikudorefalerts()
-    print("Alert DataFrame Preview:")
     #print(alert_preview)
-    print("-------------------")
-    print("Merged DataFrame:")
+    print("---------MERGED----------")
     print(merged_df)
 

@@ -109,7 +109,7 @@ elif menu_choice == "Talk to Chatbot":
             st.write("Bot:", "Sorry, I didn't understand that.")
 
 elif menu_choice == "Pikud Haoref Alerts":
-    alert_preview, merged_df_message = mainpikudorefalerts()
+    _, merged_df_message = mainpikudorefalerts()
     st.markdown(" ")
 
     # Check if merged_df_message is a DataFrame
