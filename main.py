@@ -134,7 +134,7 @@ elif menu_choice == "Pikud Haoref Alerts":
             else:
                 image += f" <img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
 
-            if float(temperature) > 25 or float(wind_speed ) > 3 :
+            if float(temperature) > 30 or float(wind_speed ) > 3 :
                 image += f"  <div style='text-align:right'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
 
             st.markdown(f" #### {title} {image}",unsafe_allow_html=True)
