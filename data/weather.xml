@@ -6644,7 +6644,7 @@
 <Ws10mm>2.3</Ws10mm>
 </Observation>
 <Observation>
-<stn_name>TEL AVIV COAST</stn_name>
+<stn_name>TEL AVIV</stn_name>
 <stn_num>178</stn_num>
 <time_obs>2024-06-04T18:00:00</time_obs>
 <BP/>
@@ -6667,7 +6667,7 @@
 <Ws10mm/>
 </Observation>
 <Observation>
-<stn_name>TEL AVIV COAST</stn_name>
+<stn_name>TEL AVIV</stn_name>
 <stn_num>178</stn_num>
 <time_obs>2024-06-04T18:10:00</time_obs>
 <BP/>
@@ -6690,7 +6690,7 @@
 <Ws10mm/>
 </Observation>
 <Observation>
-<stn_name>TEL AVIV COAST</stn_name>
+<stn_name>TEL AVIV</stn_name>
 <stn_num>178</stn_num>
 <time_obs>2024-06-04T18:20:00</time_obs>
 <BP/>

@@ -1,3 +1,5 @@
+import re
+
 import requests
 import pandas as pd
 import xml.etree.ElementTree as ET
@@ -79,11 +81,14 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
 
         result_df = pd.merge(df_alertoref, mapping_df, how='left', left_on='data', right_on='hebrewcity')
+        result_df['englishcity'] = result_df['englishcity'].apply(
+            lambda x: re.sub(r'[^a-zA-Z]', '', str(x)) if isinstance(x, str) else x)
+
+        #print(result_df  )
 
         if isinstance(df_weather, pd.DataFrame):
             merged_df = pd.merge(result_df, df_weather, how='left', left_on='englishcity', right_on='Station_Name')
-            merged_df = merged_df[~merged_df.duplicated(subset=['alertDate', 'data','title'])]
-            #merged_df = merged_df.dropna(subset=['Station_Name'])
+            merged_df_no_alertdate_unique = merged_df[~merged_df.duplicated(subset=['alertDate'])]
 
             return merged_df
         else:
