@@ -92,7 +92,7 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
 
         # Merge df_alertoref and
         # mapping_df on 'data' and 'hebrewcity' columns
-        result_df = pd.merge(df_alertoref, mapping_df, how='left', left_on='data', right_on='hebrewcity')
+        result_df = pd.merge(df_alertoref, mapping_df, how='inner', left_on='data', right_on='hebrewcity')
 
         # Clean 'englishcity' column
         result_df['englishcity'] = result_df['englishcity'].apply(
@@ -100,7 +100,7 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
 
         if isinstance(df_weather, pd.DataFrame):
             # Perform the left join based on substring matching in both directions
-            merged_df = pd.merge(result_df, df_weather, how='right',
+            merged_df = pd.merge(result_df, df_weather, how='inner',
                                  left_on=result_df['englishcity'].apply(check_station_name, args=(df_weather,)),
                                  right_on=df_weather['Station_Name'].apply(lambda x: any(
                                      station in x if isinstance(station, str) else False for station in
