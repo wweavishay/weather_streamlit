@@ -110,6 +110,8 @@ elif menu_choice == "Talk to Chatbot":
 
 elif menu_choice == "Pikud Haoref Alerts":
     _, merged_df_message = mainpikudorefalerts()
+
+
     st.markdown(" ")
 
     # Check if merged_df_message is a DataFrame
@@ -121,11 +123,11 @@ elif menu_choice == "Pikud Haoref Alerts":
             alert_date = row['alertDate']
             temperature = row['Temperature']
             wind_speed = row['Wind_Speed']
-            station_name = row['hebrewcity']
+            station_name = row['Station_Name']
             typecat = row['title'] # טילים או כלי טייס עוין
             # Construct the text
-            text = f" <div style='text-align: right;'>    אזור: {station_name}   | טמפרטורה:  {temperature}   | מהירות רוח: {wind_speed}  </div>"
-            title = f"<div style='text-align: right;color: blue;'>  {typecat}  - {alert_date} </div> "
+            text = f" <div style='text-align: right;'>    | טמפרטורה:  {temperature}   | מהירות רוח: {wind_speed}  </div>"
+            title = f"<div style='text-align: right; color: blue; font-size: 30px;'>{typecat} - {alert_date}<br><span style='color: orange;'>{station_name}</span></div>"
             image=""
             if typecat == "חדירת כלי טיס עוין":
                  image += f" <img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"

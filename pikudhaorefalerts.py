@@ -87,34 +87,43 @@ def check_station_name(x, df_weather):
 def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
 
+        mapping_dict = mapping_df.set_index('englishcity')['hebrewcity'].to_dict()
+
+
+        # Merge df_alertoref and
+        # mapping_df on 'data' and 'hebrewcity' columns
         result_df = pd.merge(df_alertoref, mapping_df, how='left', left_on='data', right_on='hebrewcity')
+
+        # Clean 'englishcity' column
         result_df['englishcity'] = result_df['englishcity'].apply(
             lambda x: re.sub(r'[^a-zA-Z]', '', str(x)) if isinstance(x, str) else x)
 
-        print(result_df)
-
         if isinstance(df_weather, pd.DataFrame):
             # Perform the left join based on substring matching in both directions
-            merged_df = pd.merge(result_df, df_weather, how='left',
+            merged_df = pd.merge(result_df, df_weather, how='right',
                                  left_on=result_df['englishcity'].apply(check_station_name, args=(df_weather,)),
                                  right_on=df_weather['Station_Name'].apply(lambda x: any(
                                      station in x if isinstance(station, str) else False for station in
                                      result_df['englishcity'])))
 
-            # Drop the duplicated columns resulting from the merge
+
+            # Drop unnecessary columns resulting from the merge
             merged_df.drop(['key_0'], axis=1, inplace=True)
 
-            # Remove duplicate rows based on all columns
+            # Remove duplicate rows based on 'Station_Name' column
+
+
+            # Remove rows where 'Station_Name' or 'Wind_Speed' or 'Temperature' is NaN
+            merged_df.dropna(subset=['Station_Name', 'Wind_Speed', 'Temperature'], axis=0, inplace=True)
+            merged_df['Station_Name'] = merged_df['Station_Name'].map(mapping_dict)
             merged_df.drop_duplicates(subset=['Station_Name'], inplace=True)
-
-            # Remove rows where 'Station_Name' or 'Wind_Speed' is NaN
-            merged_df.dropna(subset=['Station_Name', 'Wind_Speed','Temperature'], axis=0, inplace=True)
-
+            merged_df.dropna(subset=['Station_Name'], inplace=True)
             return merged_df
         else:
             return None
     else:
         return None
+
 
 def mainpikudorefalerts():
     df_alertoref, df_weather = fetch_dataframes()
