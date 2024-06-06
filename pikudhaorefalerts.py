@@ -88,23 +88,20 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
 
         mapping_dict = mapping_df.set_index('englishcity')['hebrewcity'].to_dict()
-
-
-        # Merge df_alertoref and
-        # mapping_df on 'data' and 'hebrewcity' columns
-        result_df = pd.merge(df_alertoref, mapping_df, how='inner', left_on='data', right_on='hebrewcity')
+        df_alertoref['data'] = df_alertoref['data'].map(mapping_dict)
+        result_df = df_alertoref
 
         # Clean 'englishcity' column
-        result_df['englishcity'] = result_df['englishcity'].apply(
+        result_df['englishcity'] = result_df['data'].apply(
             lambda x: re.sub(r'[^a-zA-Z]', '', str(x)) if isinstance(x, str) else x)
 
         if isinstance(df_weather, pd.DataFrame):
             # Perform the left join based on substring matching in both directions
             merged_df = pd.merge(result_df, df_weather, how='inner',
-                                 left_on=result_df['englishcity'].apply(check_station_name, args=(df_weather,)),
+                                 left_on=result_df['data'].apply(check_station_name, args=(df_weather,)),
                                  right_on=df_weather['Station_Name'].apply(lambda x: any(
                                      station in x if isinstance(station, str) else False for station in
-                                     result_df['englishcity'])))
+                                     result_df['data'])))
 
 
             # Drop unnecessary columns resulting from the merge
