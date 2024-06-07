@@ -1,7 +1,7 @@
 # Weather streamlit Application
 
 
-<img src="screenshot/welcome.png" alt="Weather App" width="400">
+<img src="screenshot/welcome.png" alt="Weather App" width="500">
 
 Welcome to the Weather Application! This command-line tool allows users to retrieve weather information, set default locations, compare weather conditions, receive alerts, and interact with a chatbot for weather-related queries.
 

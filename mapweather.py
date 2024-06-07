@@ -4,7 +4,7 @@ import folium
 
 
 def city_location_map(city=None, country=None):
-    file = "worldcities.csv"
+    file = "data/worldcities.csv"
     data = pd.read_csv(file)
 
     if city is not None and country is not None:

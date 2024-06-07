@@ -9,7 +9,7 @@ API_KEY = "cc684ce23b3296f9598c4187825107eb"
 
 def load_settings():
     try:
-        with open('settings.json', 'r') as f:
+        with open('data/settings.json', 'r') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {'timezone': 'UTC'}
@@ -47,7 +47,7 @@ def set_temperature_unit(unit):
         return "Invalid temperature unit. Please enter either Celsius or Fahrenheit."
 
 def save_settings(settings):
-    with open('settings.json', 'w') as f:
+    with open('data/settings.json', 'w') as f:
         json.dump(settings, f)
 
 def set_default_location(city_name, country_name=None, timezone_name=None):
