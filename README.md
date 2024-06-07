@@ -13,7 +13,7 @@ The Weather Application provides a range of functionalities to enhance users' ex
 - **Default Location**: Set a default location for quick access to weather information.
 - **Temperature Unit Preference**: Choose between Celsius and Fahrenheit for temperature display.
 - **Comparative Analysis**: Compare weather conditions and time between different locations.
-- **Alerts**: Receive alerts from Pikud Haoref (Home Front Command) regarding various incidents.
+- **Alerts**: Receive alerts from the Home Front Command (Pikud Haoref) about various incidents, with a focus on predicting fires based on the location of the alarm, by analyzing temperature and wind conditions.
 - **Map Visualization**: View a map showing the default location.
 - **Chatbot Interaction**: Interact with a chatbot to inquire about weather conditions.
 
