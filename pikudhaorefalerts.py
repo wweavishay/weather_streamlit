@@ -1,10 +1,24 @@
 import re
-
 import requests
 import pandas as pd
 import xml.etree.ElementTree as ET
 import json
 
+
+def read_excel_file():
+    try:
+        return pd.read_excel("data/yeshuvim.xlsx")
+    except Exception as e:
+        return f"An error occurred yeshuvim.xlsx: {e}"
+def fetch_dataframes():
+    df_alertoref = make_alert_df()
+    df_weather = xml_to_dataframe()
+    return df_alertoref, df_weather
+
+def contains_substring(s1, s2):
+    s1 = str(s1)
+    s2 = str(s2)
+    return s1 in s2 or s2 in s1
 def make_alert_df():
     url = "https://www.oref.org.il/WarningMessages/History/AlertsHistory.json"
     try:
@@ -64,28 +78,9 @@ def xml_to_dataframe():
     except Exception as e:
         return f"Error: Unable to load local XML data. {e}"
 
-def read_excel_file():
-    try:
-        return pd.read_excel("data/yeshuvim.xlsx")
-    except Exception as e:
-        return f"An error occurred yeshuvim.xlsx: {e}"
-
-
-
-def fetch_dataframes():
-    df_alertoref = make_alert_df()
-    df_weather = xml_to_dataframe()
-    return df_alertoref, df_weather
-
-def contains_substring(s1, s2):
-    s1 = str(s1)
-    s2 = str(s2)
-    return s1 in s2 or s2 in s1
-
-
 def merge_dataframes(df_alertoref, mapping_df, df_weather):
     if isinstance(df_alertoref, pd.DataFrame) and isinstance(mapping_df, pd.DataFrame):
-
+        # convert hebrewcity to english
         mapping_dict = mapping_df.set_index('hebrewcity')['englishcity'].to_dict()
         df_alertoref['data'] = df_alertoref['data'].map(mapping_dict)
 
@@ -103,7 +98,9 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
                                  right_on=df_weather['Station_Name'].apply(lambda x: x if any(
                                      contains_substring(x, y) for y in df_alertoref['data']) else None))
 
-
+            # convert english to hebrew
+            mapping_dicthe = mapping_df.set_index('englishcity')['hebrewcity'].to_dict()
+            merged_df['Station_Name'] = merged_df['Station_Name'].map(mapping_dicthe)
 
             # Remove rows where 'Station_Name' or 'Wind_Speed' or 'Temperature' is NaN
             merged_df.dropna(subset=['Station_Name', 'Wind_Speed', 'Temperature'], axis=0, inplace=True)
@@ -137,6 +134,5 @@ def mainpikudorefalerts():
 if __name__ == "__main__":
     alert_preview, merged_df = mainpikudorefalerts()
     #print(alert_preview)
-    print("---------MERGED----------")
     # print(merged_df)
 
