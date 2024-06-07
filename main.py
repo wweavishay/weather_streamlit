@@ -71,6 +71,10 @@ if menu_choice =="main":
         st.image( "https://media4.giphy.com/media/7GUjGofrXN3t0GwUOW/giphy.webp?cid=790b7611ee6j3q8pijf83lkbawdebwk9prbbclfdl43wj6s7&ep=v1_gifs_search&rid=giphy.webp&ct=s", width=200)
     with col3:
         st.image("https://media2.giphy.com/media/EmqYqVb7vvgY4VzN9g/giphy.webp?cid=ecf05e47fg2kvntqikykcolu8jg4fe93cravt3qwoz6wibsp&ep=v1_gifs_search&rid=giphy.webp&ct=s",  width=200)
+
+
+
+
 elif menu_choice == "Set Default Location":
     st.subheader("Set Default Location")
     st.write("Welcome! To set your default location, please provide the following information:")
@@ -111,59 +115,60 @@ elif menu_choice == "Compare Weather and Time":
                                   "Asia/Tokyo", "Asia/Shanghai"])
 
     if st.button("Compare Weather and Time"):
-        default_city, default_country, default_timezone = get_default_location()
-        comparison_data = compare_weather_and_time(default_city, default_country, default_timezone, city_name,
-                                                   country_name, user_timezone)
-        comparison_data['user_timezone'] = user_timezone
 
-        if 'default_location' in comparison_data and 'user_location' in comparison_data:
-            st.write("JSON Location:")
+            default_city, default_country, default_timezone = get_default_location()
+            comparison_data = compare_weather_and_time(default_city, default_country, default_timezone, city_name,
+                                                       country_name, user_timezone)
+            comparison_data['user_timezone'] = user_timezone
 
-            st.markdown(
-                f"""
-                <div style="background-color: #90EE90; padding: 30px; border-radius: 20px; margin-bottom: 20px;">
-                    <table style='border: none;'>
-                        <tr>
-                            <td style='width: 70%;'>
-                                <h3>City: {comparison_data['default_location']['city']}</h3>
-                                <p>Temperature: {comparison_data['default_location']['temperature']} °{get_temperature_unit()[0]}</p>
-                                <p>Weather Conditions: {comparison_data['default_location']['weather_conditions']}</p>
-                                <p>Humidity: {comparison_data['default_location']['humidity']}</p>
-                                <p>Time: {comparison_data['default_location']['time']} {comparison_data['default_location']['timezone']}</p>
-                            </td>
-                            <td>
-                                <img src="{display_weather_image(comparison_data['default_location']['temperature'])}" alt="Weather Icon" style="width:100px;">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                """, unsafe_allow_html=True)
+            if 'default_location' in comparison_data and 'user_location' in comparison_data:
+                st.write("JSON Location:")
+
+                st.markdown(
+                    f"""
+                    <div style="background-color: #90EE90; padding: 30px; border-radius: 20px; margin-bottom: 20px;">
+                        <table style='border: none;'>
+                            <tr>
+                                <td style='width: 70%;'>
+                                    <h3>City: {comparison_data['default_location']['city']}</h3>
+                                    <p>Temperature: {comparison_data['default_location']['temperature']} °{get_temperature_unit()[0]}</p>
+                                    <p>Weather Conditions: {comparison_data['default_location']['weather_conditions']}</p>
+                                    <p>Humidity: {comparison_data['default_location']['humidity']}</p>
+                                    <p>Time: {comparison_data['default_location']['time']} {comparison_data['default_location']['timezone']}</p>
+                                </td>
+                                <td>
+                                    <img src="{display_weather_image(comparison_data['default_location']['temperature'])}" alt="Weather Icon" style="width:100px;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    """, unsafe_allow_html=True)
 
 
-            st.write("User Location:")
+                st.write("User Location:")
 
-            st.markdown(
-                f"""
-                <div style="background-color: #FF8488; padding: 30px; border-radius: 20px;">
-                    <table style='border: none;'>
-                        <tr>
-                            <td style='width: 70%;'>
-                                <h3>City: {comparison_data['user_location']['city']}</h3>
-                                <p>Country: {comparison_data['user_location']['country']}</p>
-                                <p>Temperature: {comparison_data['user_location']['temperature']} °{get_temperature_unit()[0]}</p>
-                                <p>Weather Conditions: {comparison_data['user_location']['weather_conditions']}</p>
-                                <p>Humidity: {comparison_data['user_location']['humidity']}</p>
-                                <p>Time: {comparison_data['user_location']['time']} {comparison_data['user_location']['timezone']}</p>
-                            </td>
-                            <td>
-                                <img src="{display_weather_image(comparison_data['user_location']['temperature'])}" alt="Weather Icon" style="width:100px;">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            st.error("Failed to retrieve comparison data.")
+                st.markdown(
+                    f"""
+                    <div style="background-color: #FF8488; padding: 30px; border-radius: 20px;">
+                        <table style='border: none;'>
+                            <tr>
+                                <td style='width: 70%;'>
+                                    <h3>City: {comparison_data['user_location']['city']}</h3>
+                                    <p>Country: {comparison_data['user_location']['country']}</p>
+                                    <p>Temperature: {comparison_data['user_location']['temperature']} °{get_temperature_unit()[0]}</p>
+                                    <p>Weather Conditions: {comparison_data['user_location']['weather_conditions']}</p>
+                                    <p>Humidity: {comparison_data['user_location']['humidity']}</p>
+                                    <p>Time: {comparison_data['user_location']['time']} {comparison_data['user_location']['timezone']}</p>
+                                </td>
+                                <td>
+                                    <img src="{display_weather_image(comparison_data['user_location']['temperature'])}" alt="Weather Icon" style="width:100px;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                st.error("Failed to retrieve comparison data.")
 
 elif menu_choice == "Talk to Chatbot":
     st.subheader("Talk to Chatbot")

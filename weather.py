@@ -3,6 +3,7 @@ import json
 from datetime import datetime, timedelta, timezone
 import pytz
 import pandas as pd
+from timezonefinder import TimezoneFinder
 
 
 API_KEY = "cc684ce23b3296f9598c4187825107eb"
@@ -50,20 +51,55 @@ def save_settings(settings):
     with open('data/settings.json', 'w') as f:
         json.dump(settings, f)
 
-def set_default_location(city_name, country_name=None, timezone_name=None):
-    settings = load_settings()
 
+def city_location_map(city_name=None, country_name=None):
+    # Load data from CSV file and perform validation
+    if not isinstance(city_name, str) or not isinstance(country_name, str):
+        return None, None
+
+    file = "data/worldcities.csv"
+    try:
+        data = city_location_map.data
+    except AttributeError:
+        city_location_map.data = pd.read_csv(file)
+        data = city_location_map.data
+
+    city_name = city_name.lower()
+    country_name = country_name.lower()
+
+    city_exists = data[data['city_ascii'].str.lower() == city_name.lower()]
+    country_exists = data[data['country'].str.lower() == country_name.lower()]
+
+    if not city_exists.empty:
+        city_name = city_exists.iloc[0]['city_ascii']
+    else:
+        city_name = None
+
+    if not country_exists.empty:
+        country_name = country_exists.iloc[0]['country']
+    else:
+        country_name = None
+
+    return city_name, country_name
+
+def set_default_location(city_name, country_name=None, timezone_name=None):
     if timezone_name is None:
         timezone_name = 'UTC'
 
-    if country_name:
-        settings['default_location'] = {'city': city_name, 'country': country_name, 'timezone': timezone_name}
+    city, country = city_location_map(city_name, country_name)
+
+    if city is None and country is None:
+        return "Invalid city and country."
+
+    settings = load_settings()
+
+    if country:
+        settings['default_location'] = {'city': city, 'country': country, 'timezone': timezone_name}
     else:
-        settings['default_location'] = {'city': city_name, 'timezone': timezone_name}
+        settings['default_location'] = {'city': city, 'timezone': timezone_name}
 
     save_settings(settings)
     return "Default location set successfully."
-
 
 def get_default_location():
     # Assuming settings is a dictionary containing default location information
@@ -108,8 +144,8 @@ def get_weather(city_name, country_name=None):
     return weather_info
 
 
-
 def compare_weather_and_time(default_city, default_country, default_timezone, user_city, user_country, user_timezone):
+    # Convert default timezone and user timezone to pytz timezone objects
     default_timezone = pytz.timezone(default_timezone)
     user_timezone = pytz.timezone(user_timezone)
 
@@ -120,40 +156,36 @@ def compare_weather_and_time(default_city, default_country, default_timezone, us
         default_temperature = float(default_data['temperature'])
         user_temperature = float(user_data['temperature'])
 
-        # Get current time for default location
-        default_time = datetime.now(default_timezone)
+        # Get current time in UTC
+        utc_time = datetime.utcnow()
 
-        # Get current time for user location
-        user_time = datetime.now(user_timezone)
+        # Convert UTC time to the respective time zones
+        default_time = utc_time.replace(tzinfo=pytz.utc).astimezone(default_timezone)
+        user_time = utc_time.replace(tzinfo=pytz.utc).astimezone(user_timezone)
 
         # Create response data
         comparison_data = {
             'default_location': {
                 'city': default_city,
                 'country': default_country,
-                'temperature': default_temperature,
+                'temperature': f"{default_temperature}",
                 'weather_conditions': default_data['weather_conditions'],
-                'humidity': default_data['humidity'],
-                'time': default_time.strftime("%Y-%m-%d %H:%M:%S"),
+                'humidity': f"{default_data['humidity']}%",
+                'time': default_time.strftime("%Y-%m-%d %H:%M:%S %Z"),
                 'timezone': default_timezone.zone
             },
             'user_location': {
                 'city': user_city,
                 'country': user_country,
-                'temperature': user_temperature,
+                'temperature': f"{user_temperature}",
                 'weather_conditions': user_data['weather_conditions'],
-                'humidity': user_data['humidity'],
-                'time': user_time.strftime("%Y-%m-%d %H:%M:%S"),
+                'humidity': f"{user_data['humidity']}%",
+                'time': user_time.strftime("%Y-%m-%d %H:%M:%S %Z"),
                 'timezone': user_timezone.zone
-            }
+            },
+            'user_timezone': user_timezone.zone  # Include user's timezone
         }
-
-        # Calculate time difference
-        time_difference = user_time - default_time
-        hours, remainder = divmod(time_difference.seconds, 3600)
-        minutes, _ = divmod(remainder, 60)
-        comparison_data['time_difference'] = f"{hours} hours and {minutes} minutes"
 
         return comparison_data
     else:
-        return {"error": "Weather data not available for one or both locations."}
+        return None

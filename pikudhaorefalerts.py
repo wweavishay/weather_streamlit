@@ -100,7 +100,7 @@ def merge_dataframes(df_alertoref, mapping_df, df_weather):
 
             # convert english to hebrew
             mapping_dicthe = mapping_df.set_index('englishcity')['hebrewcity'].to_dict()
-            merged_df['Station_Name'] = merged_df['Station_Name'].map(mapping_dicthe)
+            merged_df['Station_Name'] = merged_df['data'].map(mapping_dicthe)
 
             # Remove rows where 'Station_Name' or 'Wind_Speed' or 'Temperature' is NaN
             merged_df.dropna(subset=['Station_Name', 'Wind_Speed', 'Temperature'], axis=0, inplace=True)
