@@ -28,13 +28,16 @@ def make_alert_df():
         return pd.DataFrame(data)
     except requests.exceptions.RequestException as e:
         # If there's a problem fetching data, load from a local file
-            with open("data/pikudoref.json", "r") as f:
-                data = json.load(f)
-            return pd.DataFrame(data)
+        print(f"Error fetching data from URL: {e}")
+        with open("data/pikudoref.json", "r") as f:
+            data = json.load(f)
+        return pd.DataFrame(data)
     except ValueError as e:
-        return f"Error creating DataFrame: {e}"
+        print(f"Error creating DataFrame: {e}")
+        return None
     except Exception as e:
-        return f"An unexpected error occurred: {e}"
+        print(f"An unexpected error occurred: {e}")
+        return None
 
 def xml_to_dataframe():
     url = "https://ims.gov.il/sites/default/files/ims_data/xml_files/imslasthour.xml"
