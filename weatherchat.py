@@ -7,6 +7,9 @@ from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 
 # Download NLTK data if not already downloaded
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
 nltk.data.path.append("/path/to/nltk_data")
 
 # Initialize NLTK stemmer and lemmatizer
