@@ -203,10 +203,10 @@ elif menu_choice == "Pikud Haoref Alerts":
             if typecat == "חדירת כלי טיס עוין":
                 image += f"<img src='https://cdn-icons-png.flaticon.com/128/10521/10521422.png' alt='Image' width='50' height='50'>"
             else:
-                image += f"<img src='https://cdn-icons-png.flaticon.com/128/1356/1356479.png' alt='Image' width='50' height='50'>"
+                image += f"<img src='https://media4.giphy.com/media/daPKLhcdGhyD43LSKD/giphy.webp?cid=790b7611s3zk0896luynqww8znf6fphrrvz6kkhw4lr1eopq&ep=v1_gifs_search&rid=giphy.webp&ct=s' alt='Image' width='80' height='80'>"
 
             if float(temperature) > 30 or float(wind_speed) > 3:
-                image += f"<div style='text-align: right; font-size: 18px; color: #ea4335;'> חשש לשרפות <img src='https://cdn-icons-png.flaticon.com/128/785/785116.png' alt='Image' width='50' height='50'></div>"
+                image += f"<div style='text-align: right; font-size: 18px; color: #ea4335;'> חשש לשרפות <img src='https://media4.giphy.com/media/sRW4SCnxfcx1LaFBtt/giphy.gif?cid=790b7611sk4zlitdgr9g68j1axxnj0f29iioq5fczeqdsqgj&ep=v1_stickers_search&rid=giphy.gif&ct=s' alt='Image' width='80' height='90'></div>"
             st.markdown(
                 f"<div style='border-radius: 10px; border: 2px solid #e0e0e0; padding: 20px; margin: 20px; background-color:#D3D3D3;'>"
                 f"<div>{title}</div>"
