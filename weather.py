@@ -3,20 +3,19 @@ import json
 from datetime import datetime, timedelta, timezone
 import pytz
 import pandas as pd
-from timezonefinder import TimezoneFinder
-
 
 API_KEY = "cc684ce23b3296f9598c4187825107eb"
 
 def load_settings():
+    """Loads settings from a JSON file. Returns a default timezone setting if the file is not found or is invalid."""
     try:
         with open('data/settings.json', 'r') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {'timezone': 'UTC'}
 
-
 def display_weather_image(temperature):
+    """Returns a URL of a weather icon based on the given temperature."""
     if float(temperature) < 10:
         return "https://cdn-icons-png.flaticon.com/128/2469/2469994.png"  # Cold icon
     elif 10 <= float(temperature) < 20:
@@ -25,6 +24,7 @@ def display_weather_image(temperature):
         return "https://cdn-icons-png.flaticon.com/128/9231/9231728.png"  # Warm icon
 
 def get_weather_info(city_name, country_name):
+    """Fetches and returns weather information (temperature, conditions, humidity, timezone offset) for a given city and country."""
     weather_data = get_weather(city_name, country_name)
     if weather_data:
         temperature = weather_data.get("main", {}).get("temp")
@@ -34,11 +34,14 @@ def get_weather_info(city_name, country_name):
         return temperature, weather_conditions, humidity, timezone_offset
     else:
         return None, None, None, None
+
 def get_temperature_unit():
+    """Returns the preferred temperature unit from settings, defaulting to 'Celsius' if not set."""
     settings = load_settings()
     return settings.get('temperature_unit', 'Celsius')
 
 def set_temperature_unit(unit):
+    """Sets and saves the preferred temperature unit (Celsius or Fahrenheit) in settings."""
     if unit.lower() in ['celsius', 'fahrenheit']:
         settings = load_settings()
         settings['temperature_unit'] = unit.lower()
@@ -48,12 +51,12 @@ def set_temperature_unit(unit):
         return "Invalid temperature unit. Please enter either Celsius or Fahrenheit."
 
 def save_settings(settings):
+    """Saves the given settings dictionary to a JSON file."""
     with open('data/settings.json', 'w') as f:
         json.dump(settings, f)
 
-
 def city_location_map(city_name=None, country_name=None):
-    # Load data from CSV file and perform validation
+    """Loads city and country data from a CSV file and validates the input city and country. Returns validated city and country names."""
     if not isinstance(city_name, str) or not isinstance(country_name, str):
         return None, None
 
@@ -83,6 +86,7 @@ def city_location_map(city_name=None, country_name=None):
     return city_name, country_name
 
 def set_default_location(city_name, country_name=None, timezone_name=None):
+    """Sets and saves the default location (city, country, and timezone) in settings."""
     if timezone_name is None:
         timezone_name = 'UTC'
 
@@ -102,7 +106,7 @@ def set_default_location(city_name, country_name=None, timezone_name=None):
     return "Default location set successfully."
 
 def get_default_location():
-    # Assuming settings is a dictionary containing default location information
+    """Returns the default location (city, country, and timezone) from settings."""
     settings = load_settings()
     default_location = settings.get('default_location')
 
@@ -115,8 +119,8 @@ def get_default_location():
     else:
         return None
 
-
 def get_weather(city_name, country_name=None):
+    """Fetches and returns weather data from the OpenWeatherMap API for the specified city and country."""
     if country_name:
         url = f"http://api.openweathermap.org/data/2.5/weather?q={city_name},{country_name}&appid={API_KEY}&units=metric"
     else:
@@ -143,8 +147,8 @@ def get_weather(city_name, country_name=None):
 
     return weather_info
 
-
 def compare_weather_and_time(default_city, default_country, default_timezone, user_city, user_country, user_timezone):
+    """Compares weather and local time between the default location and a user-specified location."""
     # Convert default timezone and user timezone to pytz timezone objects
     default_timezone = pytz.timezone(default_timezone)
     user_timezone = pytz.timezone(user_timezone)

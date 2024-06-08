@@ -5,6 +5,7 @@ from mapweather import *
 from pikudhaorefalerts import *
 
 def set_default_location_command(args):
+    """Sets the default location (city, country, and timezone) for weather information."""
     city_name = args.city
     country_name = args.country
     timezone_name = args.timezone
@@ -18,6 +19,7 @@ def set_default_location_command(args):
     print(result)
 
 def set_temperature_unit_command(args):
+    """Sets the preferred temperature unit (Celsius or Fahrenheit)."""
     unit = args.unit
     if not unit:
         unit = input("Select your preferred temperature unit (Celsius/Fahrenheit): ")
@@ -25,6 +27,7 @@ def set_temperature_unit_command(args):
     print(result)
 
 def compare_weather_and_time_command(args):
+    """Compares the weather and time between the user's location and another specified location."""
     city_name = args.city
     country_name = args.country
     user_timezone = args.timezone
@@ -38,6 +41,7 @@ def compare_weather_and_time_command(args):
     # Display comparison_data here
 
 def talk_to_chatbot_command(args):
+    """Interacts with a chatbot to get weather-related responses."""
     user_input = args.user_input
     if not user_input:
         user_input = input("You: ")
@@ -49,10 +53,12 @@ def talk_to_chatbot_command(args):
         print("Bot: Sorry, I didn't understand that.")
 
 def pikud_haoref_alerts_command(args):
+    """Fetches and displays Pikud Haoref alerts."""
     _, merged_df_message = mainpikudorefalerts()
     # Display merged_df_message here
 
 def show_map_command(args):
+    """Shows a map with the user's default city location highlighted."""
     default_city, default_country, _ = get_default_location()
     if default_city and default_country:
         m = city_location_map(default_city.capitalize(), default_country.capitalize())
@@ -61,6 +67,7 @@ def show_map_command(args):
         print("Error: Default location not set.")
 
 def main():
+    """Main function to parse command-line arguments and invoke corresponding functions."""
     parser = argparse.ArgumentParser(description="Weather Application CLI")
     subparsers = parser.add_subparsers(title="commands", dest="command")
 

@@ -16,28 +16,29 @@ nltk.data.path.append("/path/to/nltk_data")
 stemmer = PorterStemmer()
 lemmatizer = WordNetLemmatizer()
 
-# Initialize stemmer and lemmatizer
-stemmer = PorterStemmer()
-lemmatizer = WordNetLemmatizer()
 
 # Function to get weather data from OpenWeather API
 def get_weather(city):
+    """Fetch weather data from OpenWeather API for a given city."""
     api_key = 'cc684ce23b3296f9598c4187825107eb'  # Replace with your OpenWeather API key
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "q=" + city + "&appid=" + api_key + "&units=metric"
     response = requests.get(complete_url)
     return response.json()
 
+
 # Function to tokenize, stem, and lemmatize user input
 def preprocess_input(user_input):
+    """Tokenize, stem, and lemmatize user input."""
     tokens = word_tokenize(user_input.lower())
     stemmed_tokens = [stemmer.stem(token) for token in tokens]
     lemmatized_tokens = [lemmatizer.lemmatize(token) for token in stemmed_tokens]
     return ' '.join(lemmatized_tokens)
 
-# Function to parse user input and determine the query type and city
-def parse_input(user_input):
-    detected_city = None
+
+# Function to detect query type based on user input
+def detect_query_type(user_input):
+    """Detect the type of query from user input."""
     if 'wind' in user_input:
         return 'wind_speed', None
     elif 'temp' in user_input or 'hot' in user_input or 'cold' in user_input:
@@ -45,29 +46,49 @@ def parse_input(user_input):
     elif 'humidity' in user_input:
         return 'humidity', None
     else:
-        patterns = {
-            'general': r'weather in (\w+)',
-            'sunny_rainy': r'is it (sunny|rainy) in (\w+)',
-            'cloudy': r'is it cloudy in (\w+)',
-            'detailed': r'show all detail for (\w+)',
-            'general_short': r'(\w+)\s+in\s+(\w+)',
-        }
+        return None, None
 
-        for query_type, pattern in patterns.items():
-            match = re.search(pattern, user_input)
-            if match:
-                if query_type in ['sunny_rainy', 'cloudy', 'general_short']:
-                    return query_type, match.groups()
-                else:
-                    return query_type, (match.group(1),)
-            # Attempt to detect a city even if the pattern isn't fully matched
-            city_match = re.search(r'(\w+)', user_input)
-            if city_match:
-                detected_city = city_match.group(1)
-        return None, detected_city
+
+# Function to extract city from user input based on regex patterns
+def extract_city(user_input):
+    """Extract city from user input based on predefined regex patterns."""
+    patterns = {
+        'general': r'weather in (\w+)',
+        'sunny_rainy': r'is it (sunny|rainy) in (\w+)',
+        'cloudy': r'is it cloudy in (\w+)',
+        'detailed': r'show all detail for (\w+)',
+        'general_short': r'(\w+)\s+in\s+(\w+)',
+    }
+
+    for query_type, pattern in patterns.items():
+        match = re.search(pattern, user_input)
+        if match:
+            if query_type in ['sunny_rainy', 'cloudy', 'general_short']:
+                return query_type, match.groups()
+            else:
+                return query_type, (match.group(1),)
+
+    # Attempt to detect a city even if the pattern isn't fully matched
+    city_match = re.search(r'(\w+)', user_input)
+    if city_match:
+        return None, city_match.group(1)
+
+    return None, None
+
+
+# Function to parse user input and determine the query type and city
+def parse_input(user_input):
+    """Parse user input to determine query type and city."""
+    query_type, _ = detect_query_type(user_input)
+    if query_type:
+        return query_type, None
+
+    return extract_city(user_input)
+
 
 # Function to generate a response based on the weather data and query type
 def generate_response(query_type, query_params, weather_data):
+    """Generate response based on weather data and query type."""
     if weather_data['cod'] != 200:
         return "Sorry, I couldn't find the weather for that location."
 
@@ -80,14 +101,14 @@ def generate_response(query_type, query_params, weather_data):
     wind_speed = weather_data['wind']['speed']
     cloudy = 'clouds' in description
 
-    # Apply rules
+    # Apply rules for descriptions
     temp_desc = "cold" if temp < 10 else "hot" if temp > 30 else "moderate"
     humidity_desc = "high" if humidity > 50 else "low"
     wind_desc = "high" if wind_speed > 5 else "low"
 
     if query_type == 'general':
         return f"The weather in {city}, {country} is currently {description} with a temperature of {temp}°C, which is considered {temp_desc}."
-    elif query_type == 'sunny_rainy' or query_type == 'general_short':
+    elif query_type in ['sunny_rainy', 'general_short']:
         condition = query_params[0]
         if (condition == 'sunny' and 'sun' in description) or (condition == 'rainy' and 'rain' in description):
             return f"Yes, it is currently {condition} in {city}."
@@ -100,10 +121,7 @@ def generate_response(query_type, query_params, weather_data):
     elif query_type == 'wind_speed':
         return f"The wind speed in {city}, {country} is currently {wind_speed} m/s ({wind_desc})."
     elif query_type == 'cloudy':
-        if cloudy:
-            return f"Yes, it is currently cloudy in {city}."
-        else:
-            return f"No, it is not cloudy in {city}."
+        return "Yes, it is currently cloudy in {city}." if cloudy else "No, it is not cloudy in {city}."
     elif query_type == 'detailed' or query_type is None:
         details = (
             f"Weather details for {city}, {country}:\n"
@@ -115,8 +133,10 @@ def generate_response(query_type, query_params, weather_data):
         )
         return details
 
+
 # Main chatbot function
 def chatbot(user_input):
+    """Main chatbot function to process user input and generate a response."""
     responses = []
     processed_input = preprocess_input(user_input)
     query_type, query_params = parse_input(processed_input)
@@ -135,6 +155,7 @@ def chatbot(user_input):
         responses.append("Sorry, I didn't understand that. Please ask about the weather.")
 
     return responses
+
 
 if __name__ == "__main__":
     user_input = input("You: ")
