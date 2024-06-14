@@ -1,7 +1,6 @@
-# Weather streamlit Application
+# Weather Streamlit Application
 
-
-<img src="screenshot/welcome.png" alt="Weather App" width="500">
+![Weather App](screenshot/welcome.png)
 
 Welcome to the Weather Application! This command-line tool allows users to retrieve weather information, set default locations, compare weather conditions, receive alerts, and interact with a chatbot for weather-related queries.
 
@@ -30,15 +29,27 @@ The Weather Application provides a range of functionalities to enhance users' ex
     ```bash
     pip install -r requirements.txt
     ```
-3. Locate in local folder 
+
+3. Navigate to the local folder:
+
     ```bash
     cd weather_streamlit
     ```
+
 4. Run the application:
 
     ```bash
     python main.py
     ```
+
+## Usage
+
+### Setting Default Location
+
+To set a default location, use the CLI command:
+
+```bash
+python Cli.py set-default-location --city "CityName"
 
 ## Usage
 
