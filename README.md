@@ -49,7 +49,8 @@ The Weather Application provides a range of functionalities to enhance users' ex
 To set a default location, use the CLI command:
 
 ```bash
-python Cli.py set-default-location --city "CityName"```
+python Cli.py set-default-location --city "CityName"
+```
 
 ## Usage
 
