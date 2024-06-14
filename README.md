@@ -31,7 +31,7 @@ The Weather Application provides a range of functionalities to enhance users' ex
     pip install -r requirements.txt
     ```
 3. Locate in local folder 
- ```bash
+    ```bash
     cd weather_streamlit
     ```
 4. Run the application:
