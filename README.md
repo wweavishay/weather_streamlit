@@ -58,12 +58,13 @@ python Cli.py set-default-location --city "CityName"
 
 ## CLI Commands
 
-- **Setting Temperature Unit**
-```bash
-   python Cli.py set-temperature-unit --unit "Celsius/Fahrenheit"
-   
-   python Cli.py set-temperature-unit --unit "Celsius"
+### Setting Temperature Unit
 
+To set the temperature unit preference, use the following CLI commands:
+
+```bash
+python Cli.py set-temperature-unit --unit "Celsius/Fahrenheit"
+python Cli.py set-temperature-unit --unit "Celsius"
 ```
 <img src="screenshot/settemp.png" alt="Weather App" width="400">
 
