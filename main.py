@@ -70,6 +70,8 @@ if menu_choice == "main":
     with col3:
         st.image("https://media2.giphy.com/media/EmqYqVb7vvgY4VzN9g/giphy.webp?cid=ecf05e47fg2kvntqikykcolu8jg4fe93cravt3qwoz6wibsp&ep=v1_gifs_search&rid=giphy.webp&ct=s", width=200)
 
+
+
 # Set Default Location option
 elif menu_choice == "Set Default Location":
     st.subheader("Set Default Location")
