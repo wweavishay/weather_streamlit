@@ -46,30 +46,39 @@ The Weather Application provides a range of functionalities to enhance users' ex
 
 - **Setting Temperature Unit**
 ```python
-python main.py set-temperature-unit --unit "Celsius/Fahrenheit"
+python Cli.py set-temperature-unit --unit "Celsius/Fahrenheit"
+
+python Cli.py set-temperature-unit --unit "Celsius"
+
 ```
 <img src="screenshot/settemp.png" alt="Weather App" width="400">
 
 - **Comparing Weather and Time**
 ```python
-python main.py compare-weather-and-time --city "CityName" --country "CountryName" --timezone "Timezone"
+python Cli.py compare-weather-and-time --city "CityName" --country "CountryName" --timezone "Timezone"
+
+python Cli.py compare-weather-and-time --city "Paris" --country "France" --timezone "Europe/London"
+
 ```
 <img src="screenshot/compare.png" alt="Weather App" width="400">
 
 - **Talking to Chatbot**
 ```python
-python main.py talk-to-chatbot --user-input "Your question 
+python Cli.py talk-to-chatbot --user-input "Your question 
+
+python Cli.py talk-to-chatbot --user-input "What's the weather like in Tokyo?"
+
 ```
 <img src="screenshot/chatbot.png" alt="Weather App" width="400">
 
 - **Pikud Haoref Alerts**
 ```python
-python main.py pikud-haoref-alerts 
+python Cli.py pikud-haoref-alerts 
 ```
 <img src="screenshot/pikud haoref.png" alt="Weather App" width="400">
 
 - **Showing Map**
 ```python
-python main.py show-map
+python Cli.py show-map
 ```
 <img src="screenshot/map.png" alt="Weather App" width="400">
