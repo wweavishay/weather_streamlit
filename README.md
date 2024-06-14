@@ -59,16 +59,16 @@ python Cli.py set-default-location --city "CityName"
 ## CLI Commands
 
 - **Setting Temperature Unit**
-```python
-python Cli.py set-temperature-unit --unit "Celsius/Fahrenheit"
-
-python Cli.py set-temperature-unit --unit "Celsius"
+```bash
+   python Cli.py set-temperature-unit --unit "Celsius/Fahrenheit"
+   
+   python Cli.py set-temperature-unit --unit "Celsius"
 
 ```
 <img src="screenshot/settemp.png" alt="Weather App" width="400">
 
 - **Comparing Weather and Time**
-```python
+```bash
 python Cli.py compare-weather-and-time --city "CityName" --country "CountryName" --timezone "Timezone"
 
 python Cli.py compare-weather-and-time --city "Paris" --country "France" --timezone "Europe/London"
@@ -77,7 +77,7 @@ python Cli.py compare-weather-and-time --city "Paris" --country "France" --timez
 <img src="screenshot/compare.png" alt="Weather App" width="400">
 
 - **Talking to Chatbot**
-```python
+```bash
 python Cli.py talk-to-chatbot --user-input "Your question 
 
 python Cli.py talk-to-chatbot --user-input "What's the weather like in Tokyo?"
@@ -86,13 +86,13 @@ python Cli.py talk-to-chatbot --user-input "What's the weather like in Tokyo?"
 <img src="screenshot/chatbot.png" alt="Weather App" width="400">
 
 - **Pikud Haoref Alerts**
-```python
+```bash
 python Cli.py pikud-haoref-alerts 
 ```
 <img src="screenshot/pikud haoref.png" alt="Weather App" width="400">
 
 - **Showing Map**
-```python
+```bash
 python Cli.py show-map
 ```
 <img src="screenshot/map.png" alt="Weather App" width="400">
